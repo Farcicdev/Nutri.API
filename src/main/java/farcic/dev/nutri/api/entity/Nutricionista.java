@@ -42,7 +42,4 @@ public class Nutricionista {
     @Builder.Default
     private boolean ativo = true;
 
-    @OneToMany
-    private Paciente paciente;
-
 }

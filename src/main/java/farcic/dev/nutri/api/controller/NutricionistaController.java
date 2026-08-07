@@ -41,19 +41,13 @@ public class NutricionistaController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public NutricionistaResponse atualizar(
-            @PathVariable Long id,
-            @Valid @RequestBody NutricionistaRequest request
-    ) {
+    public NutricionistaResponse atualizar(@PathVariable Long id, @Valid @RequestBody NutricionistaRequest request) {
         return nutricionistaService.atualizar(id, request);
     }
 
     @PatchMapping("/{id}/ativo")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public NutricionistaResponse atualizarStatus(
-            @PathVariable Long id,
-            @Valid @RequestBody NutricionistaAtivoRequest request
-    ) {
+    public NutricionistaResponse atualizarStatus(@PathVariable Long id, @Valid @RequestBody NutricionistaAtivoRequest request) {
         return nutricionistaService.atualizarStatus(id, request.ativo());
     }
 
