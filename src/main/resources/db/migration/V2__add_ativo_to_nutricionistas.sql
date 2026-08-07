@@ -1,0 +1,2 @@
+ALTER TABLE nutricionistas
+    ADD COLUMN ativo BOOLEAN NOT NULL DEFAULT TRUE;
