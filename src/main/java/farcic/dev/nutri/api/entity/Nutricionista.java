@@ -1,5 +1,6 @@
 package farcic.dev.nutri.api.entity;
 
+import farcic.dev.nutri.api.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,5 +42,10 @@ public class Nutricionista {
     @Column(nullable = false)
     @Builder.Default
     private boolean ativo = true;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private Role role = Role.NUTRICIONISTA;
 
 }

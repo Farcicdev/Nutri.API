@@ -60,8 +60,7 @@ class PacienteControllerTest {
                                   "nome": "Maria",
                                   "dataNascimento": "01/01/1990",
                                   "sexo": "FEMININO",
-                                  "email": "maria@exemplo.com",
-                                  "nutricionistaId": 1
+                                  "email": "maria@exemplo.com"
                                 }
                                 """))
                 .andExpect(status().isCreated())

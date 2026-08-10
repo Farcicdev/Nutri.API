@@ -7,7 +7,6 @@ import farcic.dev.nutri.api.entity.Paciente;
 import farcic.dev.nutri.api.exception.RecursoNaoEncontradoException;
 import farcic.dev.nutri.api.exception.RegraDeNegocioException;
 import farcic.dev.nutri.api.mapper.PacienteMapper;
-import farcic.dev.nutri.api.repository.NutricionistaRepository;
 import farcic.dev.nutri.api.repository.PacienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,14 +19,14 @@ import java.util.List;
 public class PacienteService {
 
     private final PacienteRepository pacienteRepository;
-    private final NutricionistaRepository nutricionistaRepository;
     private final PacienteMapper pacienteMapper;
+    private final NutricionistaAutenticadoService nutricionistaAutenticadoService;
 
     @Transactional
     public PacienteResponse criar(PacienteRequest request) {
-        Nutricionista nutricionista = buscarNutricionista(request.nutricionistaId());
+        Nutricionista nutricionista = nutricionistaAutenticadoService.getEntidade();
         validarNutricionistaAtivo(nutricionista);
-        validarEmailUnico(request.email(), request.nutricionistaId(), null);
+        validarEmailUnico(request.email(), nutricionista.getId(), null);
 
         Paciente paciente = pacienteMapper.toEntity(request, nutricionista);
         return pacienteMapper.toResponse(pacienteRepository.save(paciente));
@@ -35,7 +34,7 @@ public class PacienteService {
 
     @Transactional(readOnly = true)
     public List<PacienteResponse> listar() {
-        return pacienteRepository.findAll().stream()
+        return pacienteRepository.findAllByNutricionistaId(nutricionistaAutenticadoService.getId()).stream()
                 .map(pacienteMapper::toResponse)
                 .toList();
     }
@@ -48,9 +47,9 @@ public class PacienteService {
     @Transactional
     public PacienteResponse atualizar(Long id, PacienteRequest request) {
         Paciente paciente = buscarEntidade(id);
-        Nutricionista nutricionista = buscarNutricionista(request.nutricionistaId());
+        Nutricionista nutricionista = nutricionistaAutenticadoService.getEntidade();
         validarNutricionistaAtivo(nutricionista);
-        validarEmailUnico(request.email(), request.nutricionistaId(), id);
+        validarEmailUnico(request.email(), nutricionista.getId(), id);
         pacienteMapper.updateEntity(paciente, request, nutricionista);
 
         return pacienteMapper.toResponse(pacienteRepository.save(paciente));
@@ -69,16 +68,12 @@ public class PacienteService {
     }
 
     private Paciente buscarEntidade(Long id) {
-        return pacienteRepository.findById(id)
+        return pacienteRepository.findByIdAndNutricionistaId(
+                        id,
+                        nutricionistaAutenticadoService.getId()
+                )
                 .orElseThrow(() -> new RecursoNaoEncontradoException(
                         "Paciente com id " + id + " não encontrado"
-                ));
-    }
-
-    private Nutricionista buscarNutricionista(Long id) {
-        return nutricionistaRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException(
-                        "Nutricionista com id " + id + " não encontrado"
                 ));
     }
 

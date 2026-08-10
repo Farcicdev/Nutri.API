@@ -8,7 +8,6 @@ import farcic.dev.nutri.api.entity.enums.Sexo;
 import farcic.dev.nutri.api.exception.RecursoNaoEncontradoException;
 import farcic.dev.nutri.api.exception.RegraDeNegocioException;
 import farcic.dev.nutri.api.mapper.PacienteMapper;
-import farcic.dev.nutri.api.repository.NutricionistaRepository;
 import farcic.dev.nutri.api.repository.PacienteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class PacienteServiceTest {
     private PacienteRepository pacienteRepository;
 
     @Mock
-    private NutricionistaRepository nutricionistaRepository;
+    private NutricionistaAutenticadoService nutricionistaAutenticadoService;
 
     private PacienteService pacienteService;
 
@@ -41,15 +40,15 @@ class PacienteServiceTest {
     void setUp() {
         pacienteService = new PacienteService(
                 pacienteRepository,
-                nutricionistaRepository,
-                new PacienteMapper()
+                new PacienteMapper(),
+                nutricionistaAutenticadoService
         );
     }
 
     @Test
     void deveCadastrarPaciente() {
         Nutricionista nutricionista = nutricionistaAtivo();
-        when(nutricionistaRepository.findById(1L)).thenReturn(Optional.of(nutricionista));
+        when(nutricionistaAutenticadoService.getEntidade()).thenReturn(nutricionista);
         when(pacienteRepository.save(any(Paciente.class))).thenAnswer(invocation -> {
             Paciente paciente = invocation.getArgument(0);
             paciente.setId(10L);
@@ -66,21 +65,20 @@ class PacienteServiceTest {
     }
 
     @Test
-    void naoDeveCadastrarComNutricionistaInexistente() {
-        when(nutricionistaRepository.findById(1L)).thenReturn(Optional.empty());
+    void naoDeveAcessarPacienteDeOutroNutricionista() {
+        when(nutricionistaAutenticadoService.getId()).thenReturn(1L);
+        when(pacienteRepository.findByIdAndNutricionistaId(10L, 1L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> pacienteService.criar(requestPadrao()))
+        assertThatThrownBy(() -> pacienteService.buscarPorId(10L))
                 .isInstanceOf(RecursoNaoEncontradoException.class)
-                .hasMessage("Nutricionista com id 1 não encontrado");
-
-        verify(pacienteRepository, never()).save(any());
+                .hasMessage("Paciente com id 10 não encontrado");
     }
 
     @Test
     void naoDeveCadastrarComNutricionistaInativo() {
         Nutricionista nutricionista = nutricionistaAtivo();
         nutricionista.setAtivo(false);
-        when(nutricionistaRepository.findById(1L)).thenReturn(Optional.of(nutricionista));
+        when(nutricionistaAutenticadoService.getEntidade()).thenReturn(nutricionista);
 
         assertThatThrownBy(() -> pacienteService.criar(requestPadrao()))
                 .isInstanceOf(RegraDeNegocioException.class)
@@ -91,7 +89,7 @@ class PacienteServiceTest {
 
     @Test
     void naoDeveCadastrarEmailDuplicadoParaMesmoNutricionista() {
-        when(nutricionistaRepository.findById(1L)).thenReturn(Optional.of(nutricionistaAtivo()));
+        when(nutricionistaAutenticadoService.getEntidade()).thenReturn(nutricionistaAtivo());
         when(pacienteRepository.existsByEmailIgnoreCaseAndNutricionistaId(
                 "MARIA@EXEMPLO.COM",
                 1L
@@ -115,8 +113,9 @@ class PacienteServiceTest {
                 .email("maria@exemplo.com")
                 .nutricionista(nutricionista)
                 .build();
-        when(pacienteRepository.findById(10L)).thenReturn(Optional.of(paciente));
-        when(nutricionistaRepository.findById(1L)).thenReturn(Optional.of(nutricionista));
+        when(nutricionistaAutenticadoService.getId()).thenReturn(1L);
+        when(nutricionistaAutenticadoService.getEntidade()).thenReturn(nutricionista);
+        when(pacienteRepository.findByIdAndNutricionistaId(10L, 1L)).thenReturn(Optional.of(paciente));
         when(pacienteRepository.save(paciente)).thenReturn(paciente);
 
         PacienteResponse response = pacienteService.atualizar(10L, requestPadrao());
@@ -138,7 +137,6 @@ class PacienteServiceTest {
                 .email("MARIA@EXEMPLO.COM")
                 .telefone("11999999999")
                 .observacoes("Acompanhamento")
-                .nutricionistaId(1L)
                 .build();
     }
 

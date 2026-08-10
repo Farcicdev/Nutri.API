@@ -14,3 +14,9 @@ spring:
 
 server:
   port: ${SERVER_PORT:8082}
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET}
+      expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}

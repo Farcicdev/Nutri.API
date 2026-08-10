@@ -28,10 +28,14 @@ public class AvaliacaoAntropometricaService {
     private final AvaliacaoAntropometricaMapper avaliacaoMapper;
     private final ValidadorProtocoloDobras validadorProtocolo;
     private final CalculadoraAntropometrica calculadora;
+    private final NutricionistaAutenticadoService nutricionistaAutenticadoService;
 
     @Transactional
     public AvaliacaoAntropometricaResponse criar(AvaliacaoAntropometricaRequest request) {
-        Consulta consulta = consultaRepository.findById(request.consultaId())
+        Consulta consulta = consultaRepository.findByIdAndNutricionistaId(
+                        request.consultaId(),
+                        nutricionistaAutenticadoService.getId()
+                )
                 .orElseThrow(() -> new RecursoNaoEncontradoException(
                         "Consulta com id " + request.consultaId() + " não encontrada"
                 ));
@@ -58,18 +62,26 @@ public class AvaliacaoAntropometricaService {
 
     @Transactional(readOnly = true)
     public List<AvaliacaoAntropometricaResponse> listarPorConsulta(Long consultaId) {
-        if (!consultaRepository.existsById(consultaId)) {
+        Long nutricionistaId = nutricionistaAutenticadoService.getId();
+        if (!consultaRepository.existsByIdAndNutricionistaId(consultaId, nutricionistaId)) {
             throw new RecursoNaoEncontradoException(
                     "Consulta com id " + consultaId + " não encontrada"
             );
         }
-        return avaliacaoRepository.findAllByConsultaIdOrderByDataAvaliacaoDesc(consultaId).stream()
+        return avaliacaoRepository
+                .findAllByConsultaIdAndConsultaNutricionistaIdOrderByDataAvaliacaoDesc(
+                        consultaId,
+                        nutricionistaId
+                ).stream()
                 .map(avaliacaoMapper::toResponse)
                 .toList();
     }
 
     private AvaliacaoAntropometrica buscarEntidade(Long id) {
-        return avaliacaoRepository.findById(id)
+        return avaliacaoRepository.findByIdAndConsultaNutricionistaId(
+                        id,
+                        nutricionistaAutenticadoService.getId()
+                )
                 .orElseThrow(() -> new RecursoNaoEncontradoException(
                         "Avaliação antropométrica com id " + id + " não encontrada"
                 ));

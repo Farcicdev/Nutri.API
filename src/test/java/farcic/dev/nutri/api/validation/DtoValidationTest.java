@@ -61,7 +61,6 @@ class DtoValidationTest {
                 .dataNascimento(LocalDate.of(1990, 1, 1))
                 .sexo(Sexo.FEMININO)
                 .email("maria@exemplo.com")
-                .nutricionistaId(1L)
                 .build();
 
         assertThat(validator.validate(request)).isEmpty();
@@ -73,13 +72,12 @@ class DtoValidationTest {
                 .nome("")
                 .dataNascimento(LocalDate.now().plusDays(1))
                 .email("invalido")
-                .nutricionistaId(0L)
                 .build();
 
         Set<ConstraintViolation<PacienteRequest>> violations = validator.validate(request);
 
         assertThat(camposComErro(violations))
-                .contains("nome", "dataNascimento", "sexo", "email", "nutricionistaId");
+                .contains("nome", "dataNascimento", "sexo", "email");
     }
 
     @Test

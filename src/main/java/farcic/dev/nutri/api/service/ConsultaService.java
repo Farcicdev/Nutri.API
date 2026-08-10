@@ -10,7 +10,6 @@ import farcic.dev.nutri.api.exception.RecursoNaoEncontradoException;
 import farcic.dev.nutri.api.exception.RegraDeNegocioException;
 import farcic.dev.nutri.api.mapper.ConsultaMapper;
 import farcic.dev.nutri.api.repository.ConsultaRepository;
-import farcic.dev.nutri.api.repository.NutricionistaRepository;
 import farcic.dev.nutri.api.repository.PacienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,15 +23,14 @@ public class ConsultaService {
 
     private final ConsultaRepository consultaRepository;
     private final PacienteRepository pacienteRepository;
-    private final NutricionistaRepository nutricionistaRepository;
     private final ConsultaMapper consultaMapper;
+    private final NutricionistaAutenticadoService nutricionistaAutenticadoService;
 
     @Transactional
     public ConsultaResponse criar(ConsultaRequest request) {
         Paciente paciente = buscarPaciente(request.pacienteId());
-        Nutricionista nutricionista = buscarNutricionista(request.nutricionistaId());
+        Nutricionista nutricionista = nutricionistaAutenticadoService.getEntidade();
         validarVinculosAtivos(paciente, nutricionista);
-        validarPacienteDoNutricionista(paciente, nutricionista);
 
         Consulta consulta = consultaMapper.toEntity(request, paciente, nutricionista);
         return consultaMapper.toResponse(consultaRepository.save(consulta));
@@ -40,7 +38,9 @@ public class ConsultaService {
 
     @Transactional(readOnly = true)
     public List<ConsultaResponse> listar() {
-        return consultaRepository.findAllByOrderByDataConsultaDesc().stream()
+        return consultaRepository.findAllByNutricionistaIdOrderByDataConsultaDesc(
+                        nutricionistaAutenticadoService.getId()
+                ).stream()
                 .map(consultaMapper::toResponse)
                 .toList();
     }
@@ -54,9 +54,8 @@ public class ConsultaService {
     public ConsultaResponse atualizar(Long id, ConsultaRequest request) {
         Consulta consulta = buscarEntidade(id);
         Paciente paciente = buscarPaciente(request.pacienteId());
-        Nutricionista nutricionista = buscarNutricionista(request.nutricionistaId());
+        Nutricionista nutricionista = nutricionistaAutenticadoService.getEntidade();
         validarVinculosAtivos(paciente, nutricionista);
-        validarPacienteDoNutricionista(paciente, nutricionista);
 
         consultaMapper.updateEntity(consulta, request, paciente, nutricionista);
         return consultaMapper.toResponse(consultaRepository.save(consulta));
@@ -75,23 +74,22 @@ public class ConsultaService {
     }
 
     private Consulta buscarEntidade(Long id) {
-        return consultaRepository.findById(id)
+        return consultaRepository.findByIdAndNutricionistaId(
+                        id,
+                        nutricionistaAutenticadoService.getId()
+                )
                 .orElseThrow(() -> new RecursoNaoEncontradoException(
                         "Consulta com id " + id + " não encontrada"
                 ));
     }
 
     private Paciente buscarPaciente(Long id) {
-        return pacienteRepository.findById(id)
+        return pacienteRepository.findByIdAndNutricionistaId(
+                        id,
+                        nutricionistaAutenticadoService.getId()
+                )
                 .orElseThrow(() -> new RecursoNaoEncontradoException(
                         "Paciente com id " + id + " não encontrado"
-                ));
-    }
-
-    private Nutricionista buscarNutricionista(Long id) {
-        return nutricionistaRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException(
-                        "Nutricionista com id " + id + " não encontrado"
                 ));
     }
 
@@ -104,9 +102,4 @@ public class ConsultaService {
         }
     }
 
-    private void validarPacienteDoNutricionista(Paciente paciente, Nutricionista nutricionista) {
-        if (!paciente.getNutricionista().getId().equals(nutricionista.getId())) {
-            throw new RegraDeNegocioException("O paciente não pertence ao nutricionista informado");
-        }
-    }
 }

@@ -18,8 +18,6 @@ public record ConsultaRequest(
         @Size(max = 2000)
         String observacoes,
         @NotNull @Positive
-        Long pacienteId,
-        @NotNull @Positive
-        Long nutricionistaId
+        Long pacienteId
 ) {
 }
