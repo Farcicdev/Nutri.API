@@ -1,5 +1,6 @@
 package farcic.dev.nutri.api.mapper;
 
+import farcic.dev.nutri.api.dto.request.NutricionistaAtualizacaoRequest;
 import farcic.dev.nutri.api.dto.request.NutricionistaRequest;
 import farcic.dev.nutri.api.dto.response.NutricionistaResponse;
 import farcic.dev.nutri.api.entity.Nutricionista;
@@ -8,21 +9,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class NutricionistaMapper {
 
-    public Nutricionista toEntity(NutricionistaRequest request) {
+    public Nutricionista toEntity(NutricionistaRequest request, String senhaCriptografada) {
         return Nutricionista.builder()
                 .nome(request.nome().trim())
                 .email(request.email().trim().toLowerCase())
-                .senha(request.senha())
+                .senha(senhaCriptografada)
                 .telefone(normalizarOpcional(request.telefone()))
                 .crn(request.crn().trim().toUpperCase())
                 .especialidade(normalizarOpcional(request.especialidade()))
                 .build();
     }
 
-    public void updateEntity(Nutricionista nutricionista, NutricionistaRequest request) {
+    public void updateEntity(Nutricionista nutricionista, NutricionistaAtualizacaoRequest request) {
         nutricionista.setNome(request.nome().trim());
         nutricionista.setEmail(request.email().trim().toLowerCase());
-        nutricionista.setSenha(request.senha());
         nutricionista.setTelefone(normalizarOpcional(request.telefone()));
         nutricionista.setCrn(request.crn().trim().toUpperCase());
         nutricionista.setEspecialidade(normalizarOpcional(request.especialidade()));

@@ -1,5 +1,6 @@
 package farcic.dev.nutri.api.service;
 
+import farcic.dev.nutri.api.dto.request.NutricionistaAtualizacaoRequest;
 import farcic.dev.nutri.api.dto.request.NutricionistaRequest;
 import farcic.dev.nutri.api.dto.response.NutricionistaResponse;
 import farcic.dev.nutri.api.entity.Nutricionista;
@@ -9,6 +10,7 @@ import farcic.dev.nutri.api.mapper.NutricionistaMapper;
 import farcic.dev.nutri.api.repository.NutricionistaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,11 +21,15 @@ public class NutricionistaService {
 
     private final NutricionistaRepository nutricionistaRepository;
     private final NutricionistaMapper nutricionistaMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public NutricionistaResponse criar(NutricionistaRequest request) {
         validarDadosUnicos(request.email(), request.crn(), null);
-        Nutricionista nutricionista = nutricionistaMapper.toEntity(request);
+        Nutricionista nutricionista = nutricionistaMapper.toEntity(
+                request,
+                passwordEncoder.encode(request.senha())
+        );
         return nutricionistaMapper.toResponse(nutricionistaRepository.save(nutricionista));
     }
 
@@ -40,12 +46,19 @@ public class NutricionistaService {
     }
 
     @Transactional
-    public NutricionistaResponse atualizar(Long id, NutricionistaRequest request) {
+    public NutricionistaResponse atualizar(Long id, NutricionistaAtualizacaoRequest request) {
         Nutricionista nutricionista = buscarEntidade(id);
         validarDadosUnicos(request.email(), request.crn(), id);
         nutricionistaMapper.updateEntity(nutricionista, request);
 
         return nutricionistaMapper.toResponse(nutricionistaRepository.save(nutricionista));
+    }
+
+    @Transactional
+    public void atualizarSenha(Long id, String novaSenha) {
+        Nutricionista nutricionista = buscarEntidade(id);
+        nutricionista.setSenha(passwordEncoder.encode(novaSenha));
+        nutricionistaRepository.save(nutricionista);
     }
 
     @Transactional

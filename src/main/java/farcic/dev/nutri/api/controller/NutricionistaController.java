@@ -1,7 +1,9 @@
 package farcic.dev.nutri.api.controller;
 
+import farcic.dev.nutri.api.dto.request.NutricionistaAtualizacaoRequest;
 import farcic.dev.nutri.api.dto.request.NutricionistaAtivoRequest;
 import farcic.dev.nutri.api.dto.request.NutricionistaRequest;
+import farcic.dev.nutri.api.dto.request.NutricionistaSenhaRequest;
 import farcic.dev.nutri.api.dto.response.NutricionistaResponse;
 import farcic.dev.nutri.api.service.NutricionistaService;
 import jakarta.validation.Valid;
@@ -41,8 +43,17 @@ public class NutricionistaController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public NutricionistaResponse atualizar(@PathVariable Long id, @Valid @RequestBody NutricionistaRequest request) {
+    public NutricionistaResponse atualizar(@PathVariable Long id, @Valid @RequestBody NutricionistaAtualizacaoRequest request) {
         return nutricionistaService.atualizar(id, request);
+    }
+
+    @PatchMapping("/{id}/senha")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void atualizarSenha(
+            @PathVariable Long id,
+            @Valid @RequestBody NutricionistaSenhaRequest request
+    ) {
+        nutricionistaService.atualizarSenha(id, request.senha());
     }
 
     @PatchMapping("/{id}/ativo")
