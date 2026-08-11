@@ -31,7 +31,13 @@ public class SecurityConfig {
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(
+                                "/api/auth/login",
+                                "/api/auth/cadastro",
+                                "/api/auth/refresh",
+                                "/api/auth/logout")
+                        .permitAll()
+                        .requestMatchers("/api/auth/me").authenticated()
                         .requestMatchers("/api/nutricionistas/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

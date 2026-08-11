@@ -4,6 +4,8 @@ import farcic.dev.nutri.api.dto.request.LoginRequest;
 import farcic.dev.nutri.api.dto.request.NutricionistaRequest;
 import farcic.dev.nutri.api.dto.response.NutricionistaResponse;
 import farcic.dev.nutri.api.dto.response.TokenResponse;
+import farcic.dev.nutri.api.dto.response.UsuarioAtualResponse;
+import farcic.dev.nutri.api.security.UsuarioAutenticado;
 import farcic.dev.nutri.api.service.AutenticacaoService;
 import farcic.dev.nutri.api.service.NutricionistaService;
 import farcic.dev.nutri.api.service.SessaoAutenticada;
@@ -14,12 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -56,13 +54,16 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
-            @CookieValue(name = REFRESH_TOKEN_COOKIE, required = false) String refreshToken
-    ) {
+    public ResponseEntity<Void> logout(@CookieValue(name = REFRESH_TOKEN_COOKIE, required = false) String refreshToken) {
         autenticacaoService.logout(refreshToken);
         return ResponseEntity.noContent()
                 .header(HttpHeaders.SET_COOKIE, cookieRemovido().toString())
                 .build();
+    }
+
+    @GetMapping("/me")
+    public UsuarioAtualResponse obterUsuarioAtual(@AuthenticationPrincipal UsuarioAutenticado usuarioAutenticado) {
+        return autenticacaoService.obterUsuarioAtual(usuarioAutenticado);
     }
 
     private ResponseEntity<TokenResponse> respostaComSessao(SessaoAutenticada sessao) {

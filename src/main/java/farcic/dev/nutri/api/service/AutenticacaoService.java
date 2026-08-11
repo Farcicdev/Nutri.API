@@ -2,6 +2,7 @@ package farcic.dev.nutri.api.service;
 
 import farcic.dev.nutri.api.dto.request.LoginRequest;
 import farcic.dev.nutri.api.dto.response.TokenResponse;
+import farcic.dev.nutri.api.dto.response.UsuarioAtualResponse;
 import farcic.dev.nutri.api.entity.Nutricionista;
 import farcic.dev.nutri.api.entity.RefreshToken;
 import farcic.dev.nutri.api.exception.SessaoInvalidaException;
@@ -47,6 +48,19 @@ public class AutenticacaoService {
 
     public void logout(String refreshToken) {
         refreshTokenService.revogar(refreshToken);
+    }
+
+    public UsuarioAtualResponse obterUsuarioAtual(UsuarioAutenticado usuario) {
+        Nutricionista nutricionista = nutricionistaRepository
+                .findById(usuario.id())
+                .filter(Nutricionista::isAtivo)
+                .orElseThrow(SessaoInvalidaException::new);
+        return new UsuarioAtualResponse(
+                nutricionista.getId(),
+                nutricionista.getNome(),
+                nutricionista.getEmail(),
+                nutricionista.getRole().name()
+        );
     }
 
     private SessaoAutenticada criarSessao(

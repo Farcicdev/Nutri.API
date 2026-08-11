@@ -70,6 +70,18 @@ export function mensagemDaApi(error: unknown) {
   return "Ocorreu um erro inesperado."
 }
 
+export interface UsuarioAtual {
+  id: number
+  nome: string
+  email: string
+  role: "ADMIN" | "NUTRICIONISTA"
+}
+
+export async function buscarUsuarioAtual() {
+  const { data } = await api.get<UsuarioAtual>("/auth/me")
+  return data
+}
+
 api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`
