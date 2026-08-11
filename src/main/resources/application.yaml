@@ -19,4 +19,8 @@ api:
   security:
     token:
       secret: ${JWT_SECRET}
-      expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
+      expiration-minutes: ${JWT_EXPIRATION_MINUTES:15}
+    refresh-token:
+      session-hours: ${REFRESH_TOKEN_SESSION_HOURS:12}
+      remember-days: ${REFRESH_TOKEN_REMEMBER_DAYS:30}
+      secure-cookie: ${REFRESH_TOKEN_SECURE_COOKIE:false}

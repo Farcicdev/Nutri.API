@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 
 public record LoginRequest(
         @NotBlank @Email String email,
-        @NotBlank String senha
+        @NotBlank String senha,
+        boolean lembrarDeMim
 ) {
+    public LoginRequest(String email, String senha) {
+        this(email, senha, false);
+    }
 }

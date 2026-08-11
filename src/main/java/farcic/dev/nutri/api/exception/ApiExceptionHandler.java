@@ -22,6 +22,15 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
+    @ExceptionHandler(SessaoInvalidaException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidSession(SessaoInvalidaException exception) {
+        ErrorResponse error = ErrorResponse.builder()
+                .message(exception.getMessage())
+                .timestamp(java.time.LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+
     @ExceptionHandler(RecursoNaoEncontradoException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(RecursoNaoEncontradoException exception) {
         ErrorResponse error = ErrorResponse.builder()
