@@ -6,7 +6,7 @@ interface TokenResponse {
   expiresIn: number
 }
 
-interface LoginData {
+export interface LoginData {
   email: string
   senha: string
   lembrarDeMim: boolean
