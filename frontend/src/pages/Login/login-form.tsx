@@ -3,12 +3,14 @@
 import type React from "react"
 import { useState } from "react"
 import { Eye, EyeOff, Mail, Lock } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { entrar, mensagemDaApi } from "@/lib/api"
+import { useAuth } from "@/contexts/auth-context"
+import { mensagemDaApi } from "@/lib/api"
 
 interface LoginCredentials {
     email: string
@@ -17,6 +19,8 @@ interface LoginCredentials {
 }
 
 export function LoginForm() {
+    const { login } = useAuth()
+    const navigate = useNavigate()
     const [credentials, setCredentials] = useState<LoginCredentials>({
         email: "",
         password: "",
@@ -25,21 +29,19 @@ export function LoginForm() {
     const [showPassword, setShowPassword] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
-    const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         setIsSubmitting(true)
         setErrorMessage(null)
-        setSuccessMessage(null)
 
         try {
-            await entrar({
+            await login({
                 email: credentials.email,
                 senha: credentials.password,
                 lembrarDeMim: credentials.rememberMe,
             })
-            setSuccessMessage("Login realizado com sucesso.")
+            navigate("/dashboard", { replace: true })
         } catch (error) {
             setErrorMessage(mensagemDaApi(error))
         } finally {
@@ -125,12 +127,6 @@ export function LoginForm() {
                     {errorMessage}
                 </p>
             )}
-            {successMessage && (
-                <p role="status" className="text-sm text-primary">
-                    {successMessage}
-                </p>
-            )}
-
             <Button type="submit" size="lg" className="mt-1 w-full font-medium" disabled={isSubmitting}>
                 {isSubmitting ? "Entrando..." : "Entrar"}
             </Button>
