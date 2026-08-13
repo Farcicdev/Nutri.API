@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
 
-import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar"
 import { AttendanceChart } from "@/components/dashboard/attendance-chart"
 import { RecentPatients } from "@/components/dashboard/recent-patients"
 import { StatCards } from "@/components/dashboard/stat-cards"
@@ -36,12 +34,6 @@ export default function Dashboard() {
   }, [carregarResumo])
 
   return (
-    <div className="flex min-h-svh bg-background">
-      <DashboardSidebar />
-
-      <div className="flex min-w-0 flex-1 flex-col">
-        <DashboardHeader />
-
         <main className="flex-1 space-y-6 p-5 sm:p-8">
           {carregando && <DashboardSkeleton />}
 
@@ -72,8 +64,6 @@ export default function Dashboard() {
             </>
           )}
         </main>
-      </div>
-    </div>
   )
 }
 

@@ -6,16 +6,17 @@ import {
   Settings,
   Users,
 } from "lucide-react"
+import { NavLink } from "react-router-dom"
 
 import { NutriLogo } from "@/components/common/nutri-logo"
 import { useAuth } from "@/contexts/auth-context"
 
 const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, ativo: true },
-  { label: "Pacientes", icon: Users, ativo: false },
-  { label: "Consultas", icon: CalendarDays, ativo: false },
-  { label: "Avaliações", icon: ClipboardList, ativo: false },
-  { label: "Configurações", icon: Settings, ativo: false },
+  { label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
+  { label: "Pacientes", icon: Users, to: "/pacientes" },
+  { label: "Consultas", icon: CalendarDays, to: "/consultas" },
+  { label: "Avaliações", icon: ClipboardList, to: "/avaliacoes" },
+  { label: "Configurações", icon: Settings, to: "/configuracoes" },
 ]
 
 export function DashboardSidebar() {
@@ -28,22 +29,18 @@ export function DashboardSidebar() {
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 p-4" aria-label="Navegação principal">
-        {navItems.map(({ label, icon: Icon, ativo }) => (
-          <button
+        {navItems.map(({ label, icon: Icon, to }) => (
+          <NavLink
             key={label}
-            type="button"
-            disabled={!ativo}
-            title={!ativo ? "Tela ainda não disponível" : undefined}
-            className={
-              ativo
-                ? "flex items-center gap-3 rounded-xl bg-sidebar-primary px-3 py-2.5 text-sm font-medium text-sidebar-primary-foreground shadow-sm"
-                : "flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-sidebar-foreground opacity-55"
+            to={to}
+            className={({ isActive }) => isActive
+              ? "flex items-center gap-3 rounded-xl bg-sidebar-primary px-3 py-2.5 text-sm font-medium text-sidebar-primary-foreground shadow-sm"
+              : "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             }
-            aria-current={ativo ? "page" : undefined}
           >
             <Icon className="size-[18px]" aria-hidden="true" />
             {label}
-          </button>
+          </NavLink>
         ))}
       </nav>
 

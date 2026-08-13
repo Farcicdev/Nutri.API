@@ -18,7 +18,6 @@ USER spring:spring
 WORKDIR /app
 COPY --from=build /workspace/application.jar application.jar
 
-EXPOSE 8080
+EXPOSE 8082
 
 ENTRYPOINT ["java", "-jar", "application.jar"]
-

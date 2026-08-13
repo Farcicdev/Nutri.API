@@ -125,6 +125,96 @@ export async function buscarResumoDashboard() {
   return data
 }
 
+export type Sexo = "MASCULINO" | "FEMININO"
+
+export interface Paciente {
+  id: number
+  nome: string
+  dataNascimento: string
+  sexo: Sexo
+  email: string
+  telefone: string | null
+  observacoes: string | null
+  ativo: boolean
+}
+
+export interface PacientePayload {
+  nome: string
+  dataNascimento: string
+  sexo: Sexo
+  email: string
+  telefone?: string
+  observacoes?: string
+}
+
+export const listarPacientes = async () => (await api.get<Paciente[]>("/pacientes")).data
+export const criarPaciente = async (payload: PacientePayload) => (await api.post<Paciente>("/pacientes", payload)).data
+export const atualizarPaciente = async (id: number, payload: PacientePayload) => (await api.put<Paciente>(`/pacientes/${id}`, payload)).data
+export const atualizarStatusPaciente = async (id: number, ativo: boolean) => (await api.patch<Paciente>(`/pacientes/${id}/ativo`, { ativo })).data
+export const removerPaciente = async (id: number) => api.delete(`/pacientes/${id}`)
+
+export interface Consulta extends ProximaConsulta {
+  observacoes: string | null
+  criadoEm: string
+  atualizadoEm: string
+  nutricionistaId: number
+  nutricionistaNome: string
+}
+
+export interface ConsultaPayload {
+  dataConsulta: string
+  tipo: TipoConsulta
+  observacoes?: string
+  pacienteId: number
+}
+
+export const listarConsultas = async () => (await api.get<Consulta[]>("/consultas")).data
+export const criarConsulta = async (payload: ConsultaPayload) => (await api.post<Consulta>("/consultas", payload)).data
+export const atualizarConsulta = async (id: number, payload: ConsultaPayload) => (await api.put<Consulta>(`/consultas/${id}`, payload)).data
+export const atualizarStatusConsulta = async (id: number, status: StatusConsulta) => (await api.patch<Consulta>(`/consultas/${id}/status`, { status })).data
+export const removerConsulta = async (id: number) => api.delete(`/consultas/${id}`)
+
+export type ProtocoloDobras = "JACKSON_POLLACK_3_PONTOS" | "JACKSON_POLLACK_7_PONTOS" | "FAULKNER"
+
+export interface Avaliacao {
+  id: number
+  consultaId: number
+  pacienteId: number
+  dataAvaliacao: string
+  peso: number
+  altura: number
+  cintura: number | null
+  quadril: number | null
+  protocoloDobras: ProtocoloDobras
+  imc: number
+  percentualGordura: number
+  massaGorda: number
+  massaMagra: number
+  observacoes: string | null
+}
+
+export interface AvaliacaoPayload {
+  consultaId: number
+  peso: number
+  altura: number
+  dataAvaliacao: string
+  cintura?: number
+  quadril?: number
+  peitoral?: number
+  tricipital?: number
+  subescapular?: number
+  bicipital?: number
+  suprailiaca?: number
+  abdominal?: number
+  coxa?: number
+  axilarMedia?: number
+  protocoloDobras: ProtocoloDobras
+  observacoes?: string
+}
+
+export const listarAvaliacoesPorConsulta = async (consultaId: number) => (await api.get<Avaliacao[]>(`/avaliacoes-antropometricas/consulta/${consultaId}`)).data
+export const criarAvaliacao = async (payload: AvaliacaoPayload) => (await api.post<Avaliacao>("/avaliacoes-antropometricas", payload)).data
+
 api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`
