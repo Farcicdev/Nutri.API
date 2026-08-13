@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
+    long countByNutricionistaIdAndAtivoTrue(Long nutricionistaId);
+
     boolean existsByEmailIgnoreCaseAndNutricionistaId(String email, Long nutricionistaId);
 
     boolean existsByEmailIgnoreCaseAndNutricionistaIdAndIdNot(

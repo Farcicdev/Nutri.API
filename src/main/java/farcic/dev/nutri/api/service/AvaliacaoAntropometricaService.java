@@ -11,6 +11,8 @@ import farcic.dev.nutri.api.mapper.AvaliacaoAntropometricaMapper;
 import farcic.dev.nutri.api.repository.AvaliacaoAntropometricaRepository;
 import farcic.dev.nutri.api.repository.ConsultaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +56,8 @@ public class AvaliacaoAntropometricaService {
 
         return avaliacaoMapper.toResponse(avaliacaoRepository.save(avaliacao));
     }
+
+
 
     @Transactional(readOnly = true)
     public AvaliacaoAntropometricaResponse buscarPorId(Long id) {
