@@ -82,6 +82,49 @@ export async function buscarUsuarioAtual() {
   return data
 }
 
+export type StatusConsulta = "AGENDADA" | "REALIZADA" | "CANCELADA"
+export type TipoConsulta = "PRIMEIRA_CONSULTA" | "RETORNO" | "ACOMPANHAMENTO"
+
+export interface AtendimentoPorMes {
+  ano: number
+  mes: number
+  quantidade: number
+}
+
+export interface ProximaConsulta {
+  id: number
+  dataConsulta: string
+  pacienteId: number
+  pacienteNome: string
+  tipo: TipoConsulta
+  status: StatusConsulta
+}
+
+export interface PacienteRecente {
+  id: number
+  nome: string
+  ultimaConsulta: string
+  imcAtual: number | null
+  percentualGorduraAtual: number | null
+}
+
+export interface DashboardResumo {
+  totalPacientes: number
+  consultasHoje: number
+  consultasConfirmadasHoje: number
+  consultasProximosSeteDias: number
+  avaliacoesRealizadas: number
+  avaliacoesRealizadasNoMes: number
+  atendimentosPorMes: AtendimentoPorMes[]
+  proximasConsultas: ProximaConsulta[]
+  pacientesRecentes: PacienteRecente[]
+}
+
+export async function buscarResumoDashboard() {
+  const { data } = await api.get<DashboardResumo>("/dashboard/resumo")
+  return data
+}
+
 api.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`

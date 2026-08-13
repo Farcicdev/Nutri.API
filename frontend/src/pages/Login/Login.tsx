@@ -1,9 +1,11 @@
 import { LoginForm } from "./login-form"
 import { NutriLogo } from "@/components/common/nutri-logo"
+import { ThemeToggle } from "@/components/common/theme-toggle"
 
 export default function LoginPage() {
     return (
         <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-background px-4 py-10">
+            <ThemeToggle className="absolute right-4 top-4 sm:right-6 sm:top-6" />
             {/* Fundo sutil */}
             <div
                 aria-hidden="true"
