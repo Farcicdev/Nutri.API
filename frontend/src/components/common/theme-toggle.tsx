@@ -1,11 +1,11 @@
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun } from "lucide-react";
 
-import { useTheme } from "@/contexts/theme-context"
-import { cn } from "@/lib/utils"
+import { useTheme } from "@/contexts/theme-context";
+import { cn } from "@/lib/utils";
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const { theme, alternarTema } = useTheme()
-  const modoEscuro = theme === "dark"
+  const { theme, alternarTema } = useTheme();
+  const modoEscuro = theme === "dark";
 
   return (
     <button
@@ -18,7 +18,11 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={modoEscuro ? "Ativar tema claro" : "Ativar tema escuro"}
       title={modoEscuro ? "Tema claro" : "Tema escuro"}
     >
-      {modoEscuro ? <Sun className="size-5" aria-hidden="true" /> : <Moon className="size-5" aria-hidden="true" />}
+      {modoEscuro ? (
+        <Sun className="size-5" aria-hidden="true" />
+      ) : (
+        <Moon className="size-5" aria-hidden="true" />
+      )}
     </button>
-  )
+  );
 }

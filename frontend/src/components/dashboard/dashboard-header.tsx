@@ -1,14 +1,14 @@
-import { LogOut } from "lucide-react"
+import { LogOut } from "lucide-react";
 
-import { NutriLogo } from "@/components/common/nutri-logo"
-import { ThemeToggle } from "@/components/common/theme-toggle"
-import { useAuth } from "@/contexts/auth-context"
+import { NutriLogo } from "@/components/common/nutri-logo";
+import { ThemeToggle } from "@/components/common/theme-toggle";
+import { useAuth } from "@/contexts/auth-context";
 
 function saudacaoAtual() {
-  const hora = new Date().getHours()
-  if (hora < 12) return "Bom dia"
-  if (hora < 18) return "Boa tarde"
-  return "Boa noite"
+  const hora = new Date().getHours();
+  if (hora < 12) return "Bom dia";
+  if (hora < 18) return "Boa tarde";
+  return "Boa noite";
 }
 
 function iniciais(nome: string) {
@@ -18,13 +18,13 @@ function iniciais(nome: string) {
     .slice(0, 2)
     .map((parte) => parte[0])
     .join("")
-    .toUpperCase()
+    .toUpperCase();
 }
 
 export function DashboardHeader() {
-  const { usuario, logout } = useAuth()
-  const nome = usuario?.nome ?? "Nutricionista"
-  const primeiroNome = nome.trim().split(/\s+/)[0]
+  const { usuario, logout } = useAuth();
+  const nome = usuario?.nome ?? "Nutricionista";
+  const primeiroNome = nome.trim().split(/\s+/)[0];
 
   return (
     <header className="border-b border-border bg-card/60 px-5 py-4 backdrop-blur sm:px-8">
@@ -59,11 +59,13 @@ export function DashboardHeader() {
             {iniciais(nome)}
           </div>
           <div className="hidden flex-col leading-tight md:flex">
-            <span className="max-w-52 truncate text-sm font-semibold">{nome}</span>
+            <span className="max-w-52 truncate text-sm font-semibold">
+              {nome}
+            </span>
             <span className="text-xs text-muted-foreground">Nutricionista</span>
           </div>
         </div>
       </div>
     </header>
-  )
+  );
 }

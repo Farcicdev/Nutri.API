@@ -1,11 +1,11 @@
-import { StrictMode } from "react"
-import { createRoot } from "react-dom/client"
-import { BrowserRouter } from "react-router-dom"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
-import "./index.css"
-import App from "./App"
-import { AuthProvider } from "@/contexts/auth-context"
-import { ThemeProvider } from "@/contexts/theme-context"
+import "./index.css";
+import App from "./App";
+import { AuthProvider } from "@/contexts/auth-context";
+import { ThemeProvider } from "@/contexts/theme-context";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -17,4 +17,4 @@ createRoot(document.getElementById("root")!).render(
       </BrowserRouter>
     </ThemeProvider>
   </StrictMode>,
-)
+);
