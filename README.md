@@ -129,14 +129,55 @@ O access token permanece somente em memória no frontend. O refresh token não f
 
 ## Como executar
 
-### Pré-requisitos
+### Execução rápida da API com Docker
+
+Para subir a API e o PostgreSQL em um computador novo, são necessários:
+
+- Docker com Docker Compose;
+- Git;
+- OpenSSL, utilizado somente na primeira execução para gerar a chave JWT.
+
+Clone o repositório e execute o script de inicialização:
+
+```bash
+git clone https://github.com/Farcicdev/Nutri.API.git
+cd Nutri.API
+./start.sh
+```
+
+Na primeira execução, o script:
+
+- cria o arquivo `.env` a partir do `.env.example`;
+- gera um `JWT_SECRET` Base64 seguro;
+- valida a configuração do Docker Compose;
+- constrói as imagens;
+- inicia a API e o PostgreSQL em segundo plano.
+
+O arquivo `.env` existente nunca é substituído. Depois da inicialização, a API fica disponível em:
+
+```text
+http://localhost:8083/api
+```
+
+Para acompanhar os logs ou encerrar os containers:
+
+```bash
+docker compose logs -f api
+docker compose down
+```
+
+O mapeamento padrão publica a porta `8083` do computador e a encaminha para a porta `8082` do container. Dessa forma, a API do Docker pode funcionar ao mesmo tempo que uma instância iniciada pela IDE em `localhost:8082`.
+
+### Desenvolvimento local
+
+#### Pré-requisitos
 
 - Java 21;
 - Node.js 20 ou superior;
 - Docker e Docker Compose;
 - Git.
 
-### 1. Clone e configure
+#### 1. Clone e configure
 
 ```bash
 git clone https://github.com/Farcicdev/Nutri.API.git
@@ -150,7 +191,7 @@ Gere uma chave JWT Base64 segura e coloque o resultado em `JWT_SECRET`:
 openssl rand -base64 32
 ```
 
-### 2. Inicie o PostgreSQL
+#### 2. Inicie o PostgreSQL
 
 ```bash
 docker compose up -d database
@@ -158,7 +199,7 @@ docker compose up -d database
 
 O banco ficará disponível em `localhost:5435`. As tabelas são criadas automaticamente pelas migrations do Flyway.
 
-### 3. Inicie a API
+#### 3. Inicie a API
 
 ```bash
 ./mvnw spring-boot:run
@@ -166,7 +207,7 @@ O banco ficará disponível em `localhost:5435`. As tabelas são criadas automat
 
 A API responde em `http://localhost:8082/api`.
 
-### 4. Inicie o frontend
+#### 4. Inicie o frontend
 
 Em outro terminal:
 
@@ -178,13 +219,13 @@ npm run dev
 
 O Vite informa a URL local, normalmente `http://localhost:5173`. Em desenvolvimento, o proxy encaminha `/api` para `http://localhost:8082`.
 
-### Execução da API com Docker
+### Execução manual da API com Docker
 
 ```bash
-docker compose up --build
+docker compose up --build --detach
 ```
 
-Esse comando sobe a API e o PostgreSQL. O frontend continua sendo iniciado separadamente com Vite.
+Esse comando pressupõe que o arquivo `.env` já exista e contenha um `JWT_SECRET` válido. Ele sobe a API em `localhost:8083` e o PostgreSQL em `localhost:5435`. O frontend continua sendo iniciado separadamente com Vite.
 
 ## Primeiro acesso
 
@@ -269,6 +310,7 @@ A suíte cobre validação de DTOs, regras de serviços, segurança, entidades, 
 ├── frontend/src/              # Aplicação React
 ├── compose.yaml               # API e PostgreSQL
 ├── Dockerfile                 # Build multi-stage da API
+├── start.sh                   # Inicialização automatizada com Docker
 └── pom.xml                    # Dependências e build Maven
 ```
 

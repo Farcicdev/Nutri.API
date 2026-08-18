@@ -1,0 +1,645 @@
+{
+  "info": {
+    "_postman_id": "f639b26b-f2a6-4640-a442-8db8526cd00c",
+    "name": "nutri.api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54609498",
+    "_collection_link": "https://go.postman.co/collection/54609498-f639b26b-f2a6-4640-a442-8db8526cd00c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Nutriocionista",
+      "item": [
+        {
+          "name": "cadastrarNutri",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\" : \"Augusto\",\n    \"email\" : \"augusto@gmail.com\",\n    \"senha\" : \"12345678910\",\n    \"telefone\" : \"11996248737\",\n    \"crn\" : \"123456\",\n    \"especialidade\" : \"Nutricionista\"\n\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/nutricionistas",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "nutricionistas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "listarNutri",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/nutricionistas",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "nutricionistas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "BuscarIdNutri",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/nutricionistas/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "nutricionistas",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateNutri",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\" : \"Augusto\",\n    \"email\" : \"augusto@gmail.com\",\n    \"senha\" : \"123456789\",\n    \"telefone\" : \"11996248737\",\n    \"crn\" : \"123456\",\n    \"especialidade\" : \"Nutricionista\"\n\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/nutricionistas/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "nutricionistas",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ativaNutri",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ativo\" : true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/nutricionistas/1/ativo",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "nutricionistas",
+                "1",
+                "ativo"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteNutri",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/nutricionistas/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "nutricionistas",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Paciente",
+      "item": [
+        {
+          "name": "cadastrarPaciente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\" : \"augusto\",\n    \"dataNascimento\" : \"09/01/2003\",\n    \"sexo\" : \"MASCULINO\",\n    \"email\" : \"augusto@gmail.com\",\n    \"telefone\" : \"11996248737\",\n    \"observacoes\" : \"exemplo\",\n    \"nutricionistaId\" : 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/pacientes",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "pacientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "listarPaciente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/pacientes",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "pacientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "buscarPorId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/pacientes/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "pacientes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\" : \"augusto\",\n    \"dataNascimento\" : \"09/01/2003\",\n    \"sexo\" : \"MASCULINO\",\n    \"email\" : \"augusto@gmail.com\",\n    \"telefone\" : \"11996248737\",\n    \"observacoes\" : \"exemplo dd\",\n    \"nutricionistaId\" : 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/pacientes/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "pacientes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "atulizarStatus",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"ativo\" : true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/pacientes/1/ativo",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "pacientes",
+                "1",
+                "ativo"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AvaliacaoAntropometrica",
+      "item": [
+        {
+          "name": "PostAvaliacao",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"consultaId\": 1,\n    \"peso\": 80.00,\n    \"altura\": 1.80,\n    \"dataAvaliacao\": \"10/08/2026 11:30\",\n    \"cintura\": 88.00,\n    \"quadril\": 100.00,\n    \"peitoral\": 12.00,\n    \"tricipital\": 15.00,\n    \"subescapular\": 18.00,\n    \"bicipital\": 8.00,\n    \"suprailiaca\": 16.00,\n    \"abdominal\": 22.00,\n    \"coxa\": 20.00,\n    \"axilarMedia\": 14.00,\n    \"protocoloDobras\": \"JACKSON_POLLACK_7_PONTOS\",\n    \"observacoes\": \"Avaliação antropométrica inicial\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/avaliacoes-antropometricas",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "avaliacoes-antropometricas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetPorId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/avaliacoes-antropometricas/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "avaliacoes-antropometricas",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetPorConsulta",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/avaliacoes-antropometricas/consulta/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "avaliacoes-antropometricas",
+                "consulta",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Consulta",
+      "item": [
+        {
+          "name": "MarcarConsulta",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"dataConsulta\" : \"11/10/2026 10:00\",\n    \"tipo\" : \"PRIMEIRA_CONSULTA\",\n    \"observacoes\" : \"a\",\n    \"pacienteId\" : \"1\",\n    \"nutricionistaId\" : \"2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/consultas",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "consultas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ListarConsulta",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/consultas",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "consultas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ConsultasPorId",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/consultas/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "consultas",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AtualizarConsulta",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/consultas/{id}/status",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "consultas",
+                "{id}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "cadastrarUsuario",
+      "item": [
+        {
+          "name": "CadastroUsuario",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\" : \"teste\",\n    \"email\" : \"teste@gmail.com\",\n    \"senha\" : \"123456789\",\n    \"telefone\" : \"11995009307\",\n    \"crn\" : \"123123\",\n    \"especialidade\" : \"NUTRICIONISTA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/auth/cadastro",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "auth",
+                "cadastro"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();\npm.environment.set(\"token\", response.accessToken);\nconsole.log(\"Novo token:\", response.accessToken);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\" : \"teste@gmail.com\",\n    \"senha\" : \"123456789\",\n    \"lembrarDeMim\" : false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/auth/login",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\" : \"nao sei\",\n    \"codigoBarras\" : \"0000000000123\",\n    \"preco\" : 10.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8082/api/auth/me",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "DashBoard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:8082/api/dashboard/resumo",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "dashboard",
+                "resumo"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

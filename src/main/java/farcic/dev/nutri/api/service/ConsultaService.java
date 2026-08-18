@@ -9,6 +9,7 @@ import farcic.dev.nutri.api.entity.enums.StatusConsulta;
 import farcic.dev.nutri.api.exception.RecursoNaoEncontradoException;
 import farcic.dev.nutri.api.exception.RegraDeNegocioException;
 import farcic.dev.nutri.api.mapper.ConsultaMapper;
+import farcic.dev.nutri.api.repository.AvaliacaoAntropometricaRepository;
 import farcic.dev.nutri.api.repository.ConsultaRepository;
 import farcic.dev.nutri.api.repository.PacienteRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class ConsultaService {
     private final PacienteRepository pacienteRepository;
     private final ConsultaMapper consultaMapper;
     private final NutricionistaAutenticadoService nutricionistaAutenticadoService;
+    private final AvaliacaoAntropometricaRepository avaliacaoAntropometricaRepository;
 
     @Transactional
     public ConsultaResponse criar(ConsultaRequest request) {
@@ -70,7 +72,11 @@ public class ConsultaService {
 
     @Transactional
     public void remover(Long id) {
-        consultaRepository.delete(buscarEntidade(id));
+        if (avaliacaoAntropometricaRepository.existsByConsultaId(id)){
+            throw new RegraDeNegocioException("Não é possível excluir uma consulta que possui avaliações");
+        }
+            Consulta consulta = buscarEntidade(id);
+            consultaRepository.delete(consulta);
     }
 
     private Consulta buscarEntidade(Long id) {

@@ -31,4 +31,6 @@ public interface AvaliacaoAntropometricaRepository extends JpaRepository<Avaliac
             Long id,
             Long nutricionistaId
     );
+
+    boolean existsByConsultaId(Long consultaId);
 }
