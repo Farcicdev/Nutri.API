@@ -139,8 +139,7 @@ export default function Consultas() {
           </p>
         </div>
         <Button onClick={nova} disabled={!pacientes.length}>
-          <CalendarPlus /> Nova consulta
-        </Button>
+          <CalendarPlus /> Nova consulta</Button>
       </div>
       {erro && (
         <p

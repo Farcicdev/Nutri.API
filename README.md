@@ -188,22 +188,12 @@ Esse comando sobe a API e o PostgreSQL. O frontend continua sendo iniciado separ
 
 ## Primeiro acesso
 
-Crie um nutricionista pelo endpoint público de cadastro:
+Ao iniciar a API, o Flyway cria automaticamente um nutricionista de teste. Use estas credenciais no frontend:
 
-```bash
-curl -X POST http://localhost:8082/api/auth/cadastro \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nome": "Maria Oliveira",
-    "email": "maria@example.com",
-    "senha": "senha-segura-123",
-    "telefone": "11999999999",
-    "crn": "CRN-3 12345",
-    "especialidade": "Nutrição clínica"
-  }'
-```
+- **E-mail:** `teste@gmail.com`
+- **Senha:** `123456789`
 
-Depois, acesse o frontend e entre com o e-mail e a senha cadastrados.
+A senha é armazenada no banco como hash BCrypt. Essas credenciais são destinadas somente ao ambiente de demonstração/desenvolvimento e devem ser alteradas ou removidas antes de uma implantação em produção.
 
 ## Principais endpoints
 
